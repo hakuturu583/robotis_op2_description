@@ -13,11 +13,12 @@
 # limitations under the License.
 
 import os
-from ament_index_python.packages import get_package_share_directory
 
-# import launch
-# from launch.actions import DeclareLaunchArgument, ExecuteProcess
-# from launch.substitutions import LaunchConfiguration
+from click import launch
+from ament_index_python.packages import get_package_share_directory
+from launch.conditions import IfCondition, LaunchConfigurationEquals
+from launch.actions import DeclareLaunchArgument  # , ExecuteProcess
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch import LaunchDescription
 import xacro
@@ -35,10 +36,46 @@ def generate_robot_description():
 
 
 def generate_launch_description():
+    launch_rviz = LaunchConfiguration("launch_rviz", default=True)
+    launch_rviz_arg = DeclareLaunchArgument(
+        "launch_rviz",
+        default_value=launch_rviz,
+        description="If true, launch with given rviz configuration.",
+    )
+    mode = LaunchConfiguration("mode", default="simulation")
+    mode_arg = DeclareLaunchArgument(
+        "mode",
+        default_value=mode,
+        description="Please select launch mode, simulation, joint_state_publisher is available.",
+    )
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="both",
         parameters=[generate_robot_description()],
     )
-    return LaunchDescription([robot_state_publisher])
+    joint_state_publisher = Node(
+        package="joint_state_publisher_gui",
+        executable="joint_state_publisher_gui",
+        output="both",
+        condition=LaunchConfigurationEquals("mode", "joint_state_publisher"),
+    )
+    rviz = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output={"stderr": "log", "stdout": "log"},
+        condition=IfCondition(launch_rviz),
+        arguments=[
+            "-d",
+            os.path.join(
+                get_package_share_directory("robotis_op2_description"),
+                "rviz",
+                "robot.rviz",
+            ),
+        ],
+    )
+
+    return LaunchDescription(
+        [robot_state_publisher, rviz, launch_rviz_arg, joint_state_publisher, mode_arg]
+    )
