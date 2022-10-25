@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="webots_joint_controller" params="joint_name">
+        <joint name="${joint_name}">
+            <command_interface name="position">
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <param name="initial_position">0</param> 
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="robotis_op2_webots">
+        <ros2_control name="webots_ros2_control" type="system">
+            <hardware>
+                <plugin>webots_ros2_control::Ros2ControlSystem</plugin>
+            </hardware>
+
+            <xacro:webots_joint_controller joint_name="r_sho_pitch"/>
+            <xacro:webots_joint_controller joint_name="l_sho_pitch"/>
+            <xacro:webots_joint_controller joint_name="r_sho_roll"/>
+            <xacro:webots_joint_controller joint_name="l_sho_roll"/>
+            <xacro:webots_joint_controller joint_name="r_el"/>
+            <xacro:webots_joint_controller joint_name="l_el"/>
+            <xacro:webots_joint_controller joint_name="r_hip_yaw"/>
+            <xacro:webots_joint_controller joint_name="l_hip_yaw"/>
+            <xacro:webots_joint_controller joint_name="r_hip_roll"/>
+            <xacro:webots_joint_controller joint_name="l_hip_roll"/>
+            <xacro:webots_joint_controller joint_name="r_hip_pitch"/>
+            <xacro:webots_joint_controller joint_name="l_hip_pitch"/>
+            <xacro:webots_joint_controller joint_name="r_knee"/>
+            <xacro:webots_joint_controller joint_name="l_knee"/>
+            <xacro:webots_joint_controller joint_name="r_ank_pitch"/>
+            <xacro:webots_joint_controller joint_name="l_ank_pitch"/>
+            <xacro:webots_joint_controller joint_name="r_ank_roll"/>
+            <xacro:webots_joint_controller joint_name="l_ank_roll"/>
+            <xacro:webots_joint_controller joint_name="head_pan"/>
+            <xacro:webots_joint_controller joint_name="head_tilt"/>
+        </ros2_control>
+    </xacro:macro>
+</robot>
