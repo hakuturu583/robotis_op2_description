@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>robotis_op2_description</name>
+  <version>0.0.0</version>
+  <description>robot description for robotis op2 platform</description>
+  <maintainer email="ms.kataoka@gmail.com">masaya kataoka</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>ament_lint_auto</depend>
+  <depend>ros2_control</depend>
+  <depend>webots_ros2_control</depend>
+  <depend>rclcpp</depend>
+  <depend>xacro</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>joint_state_broadcaster</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_cmake_clang_format</test_depend>
+  <test_depend>ament_cmake_copyright</test_depend>
+  <test_depend>ament_cmake_lint_cmake</test_depend>
+  <test_depend>ament_cmake_pep257</test_depend>
+  <test_depend>ament_cmake_xmllint</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
