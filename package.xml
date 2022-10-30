@@ -12,6 +12,7 @@
   <depend>ament_lint_auto</depend>
   <depend>ros2_control</depend>
   <depend>webots_ros2_control</depend>
+  <depend>webots_ros2_driver</depend>
   <depend>rclcpp</depend>
   <depend>xacro</depend>
   <depend>joint_state_publisher</depend>

@@ -17,7 +17,12 @@ import os
 from click import launch
 from ament_index_python.packages import get_package_share_directory
 from launch.conditions import IfCondition, LaunchConfigurationEquals
-from launch.actions import DeclareLaunchArgument  # , ExecuteProcess
+from launch.actions import (
+    DeclareLaunchArgument,
+    ExecuteProcess,
+    IncludeLaunchDescription,
+)
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch import LaunchDescription
@@ -75,7 +80,36 @@ def generate_launch_description():
             ),
         ],
     )
-
+    # control_node = Node(
+    #    package="controller_manager",
+    #    executable="ros2_control_node",
+    #    parameters=[
+    #        generate_robot_description(),
+    #        os.path.join(
+    #            get_package_share_directory("robotis_op2_description"),
+    #            "config",
+    #            "controllers.yaml",
+    #        ),
+    #    ],
+    #    output={"stdout": "screen", "stderr": "screen"},
+    #    condition=LaunchConfigurationEquals("mode", "simulation"),
+    # )
     return LaunchDescription(
-        [robot_state_publisher, rviz, launch_rviz_arg, joint_state_publisher, mode_arg]
+        [
+            robot_state_publisher,
+            rviz,
+            launch_rviz_arg,
+            joint_state_publisher,
+            mode_arg,
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    [
+                        get_package_share_directory("robotis_op2_description"),
+                        "/launch/webots.launch.py",
+                    ]
+                ),
+                condition=LaunchConfigurationEquals("mode", "simulation"),
+            ),
+            # control_node,
+        ]
     )
